@@ -111,14 +111,24 @@ function Home() {
     }, [fetchExpanses])
 
     return (
-        <div>
-            <div className='user-section'>
-                <h1>Welcome {loggedInUser}</h1>
-                <button onClick={handleLogout}>Logout</button>
+        <div className='dashboard'>
+            <div className='dash-header'>
+                <div className='dash-brand'>
+                    <div className='dash-brand-mark'>₹</div>
+                    <div>
+                        <div className='dash-brand-title'>Expense Tracker</div>
+                        <div className='dash-welcome'>Welcome, {loggedInUser}</div>
+                    </div>
+                </div>
+                <button onClick={handleLogout} className='btn-logout'>Logout</button>
             </div>
-            <ExpenseDetails expenseAmt={expenseAmt} incomeAmt={incomeAmt} />
-            <ExpenseTrackerForm addExpanses={addExpanses} />
-            <ExpansesTable expanses={expanses} handleDelete={handleDelete} />
+            <div className='dash-body'>
+                <div>
+                    <ExpenseDetails expenseAmt={expenseAmt} incomeAmt={incomeAmt} />
+                    <ExpenseTrackerForm addExpanses={addExpanses} />
+                </div>
+                <ExpansesTable expanses={expanses} handleDelete={handleDelete} />
+            </div>
             <ToastContainer />
         </div>
     )

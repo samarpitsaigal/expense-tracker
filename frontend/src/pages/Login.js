@@ -62,34 +62,43 @@ function Login() {
     }
 
     return (
-        <div className='container'>
-            <h1>Login</h1>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label htmlFor='email'>Email</label>
-                    <input
-                        onChange={handleChange}
-                        type='email'
-                        name='email'
-                        placeholder='Enter your email...'
-                        value={loginInfo.email}
-                    />
+        <div className='auth-page'>
+            <div className='auth-card'>
+                <div className='auth-logo'>
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
                 </div>
-                <div>
-                    <label htmlFor='password'>Password</label>
-                    <input
-                        onChange={handleChange}
-                        type='password'
-                        name='password'
-                        placeholder='Enter your password...'
-                        value={loginInfo.password}
-                    />
-                </div>
-                <button type='submit'>Login</button>
-                <span>Does't have an account ?
-                    <Link to="/signup">Signup</Link>
-                </span>
-            </form>
+                <h1>Welcome Back</h1>
+                <p className='auth-subtitle'>Sign in to manage your expenses</p>
+                <form onSubmit={handleLogin}>
+                    <div className='form-group'>
+                        <label htmlFor='email'>Email</label>
+                        <input
+                            onChange={handleChange}
+                            type='email'
+                            name='email'
+                            placeholder='Enter your email...'
+                            value={loginInfo.email}
+                        />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor='password'>Password</label>
+                        <input
+                            onChange={handleChange}
+                            type='password'
+                            name='password'
+                            placeholder='Enter your password...'
+                            value={loginInfo.password}
+                        />
+                    </div>
+                    <button type='submit' className='btn-primary'>Login</button>
+                    <p className='auth-alt'>Doesn't have an account?
+                        <Link className='auth-link' to="/signup">Signup</Link>
+                    </p>
+                </form>
+            </div>
             <ToastContainer />
         </div>
     )

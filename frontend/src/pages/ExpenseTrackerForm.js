@@ -21,38 +21,36 @@ const ExpenseTrackerForm = ({addExpanses}) => {
         handleError('All fields are required')
         return
       }
-      setTimeout(()=>{
-        setExpenseInfo({text:" ",amount:" "})
-      },1000)
+      setExpenseInfo({text:'',amount:''})
       addExpanses(expenseInfo)
     }
 
   return (
-    <div className="container">
-      <h1>Expense Tracker</h1>
+    <div className="form-card">
+      <h2>Add Transaction</h2>
+      <p className="form-hint">Use a negative amount for expenses, positive for income</p>
       <form onSubmit={handleExpense}>
-        <div>
-          <label htmlFor="email">Expense Description</label>
+        <div className="form-group">
+          <label htmlFor="text">Description</label>
           <input
             onChange={handleChange}
             type="text"
             name="text"
-            placeholder="Enter your Expense Descriptions"
+            placeholder="Enter your expense description..."
             value={expenseInfo.text}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="amount">Amount</label>
           <input
             onChange={handleChange}
             type="number"
             name="amount"
-            placeholder="Enter your expense amount"
+            placeholder="e.g. 500 or -200"
             value={expenseInfo.amount}
           />
         </div>
-        <button type="submit">Add Expense</button>
-
+        <button type="submit" className="btn-primary">Add Transaction</button>
       </form>
     </div>
   );
