@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { APIUrl, handleError, handleSuccess } from '../utils';
 import { ToastContainer } from 'react-toastify';
@@ -37,7 +37,7 @@ function Home() {
         }, 1000)
     }
 
-    const fetchExpanses = async () => {
+    const fetchExpanses = useCallback(async () => {
         try {
             const url = `${APIUrl}/expanses`;
             const headers = {
@@ -56,7 +56,7 @@ function Home() {
         } catch (err) {
             handleError(err);
         }
-    }
+    }, [navigate])
 
     const addExpanses = async (data) => {
         try {
@@ -108,7 +108,7 @@ function Home() {
     
     useEffect(() => {
         fetchExpanses()
-    }, [])
+    }, [fetchExpanses])
 
     return (
         <div>
