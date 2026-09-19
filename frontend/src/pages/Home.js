@@ -2,14 +2,31 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { APIUrl, handleError, handleSuccess } from '../utils';
 import { ToastContainer } from 'react-toastify';
+import ExpansesTable from './ExpansesTable';
+import ExpenseTrackerForm from './ExpenseTrackerForm';
+import ExpenseDetails from './ExpenseDetails';
 
 function Home() {
     const [loggedInUser, setLoggedInUser] = useState('');
-    const [products, setProducts] = useState('');
+    const [expanses, setExpanses] = useState([])
+    const [expenseAmt,setExpenseAmt] = useState(0)
+    const [incomeAmt,setIncomeAmt] = useState(0)
     const navigate = useNavigate();
     useEffect(() => {
         setLoggedInUser(localStorage.getItem('loggedInUser'))
     }, [])
+
+    useEffect(()=>{
+        const amount = expanses.map((item)=>item.amount)
+        console.log(amount)
+        const income = amount.filter(item=>item>0).reduce((acc,item)=>(acc +=item),0)
+        console.log('income',income)
+        const exp = amount.filter(item=>item<0).reduce((acc,item)=>(acc+=item),0)*-1
+        console.log('expenses is: ',exp )
+        setIncomeAmt(income)
+        setExpenseAmt(exp)
+        
+    },[expanses])
 
     const handleLogout = (e) => {
         localStorage.removeItem('token');
@@ -20,39 +37,88 @@ function Home() {
         }, 1000)
     }
 
-    const fetchProducts = async () => {
+    const fetchExpanses = async () => {
         try {
-            const url = `${APIUrl}/products`;
+            const url = `${APIUrl}/expanses`;
             const headers = {
                 headers: {
                     'Authorization': localStorage.getItem('token')
                 }
             }
-            const response = await fetch(url, headers);
+            const response = await fetch(url, headers); 
+            if (response.status === 403) {
+                navigate('/login')
+                return
+            }
             const result = await response.json();
             console.log(result);
-            setProducts(result);
+            setExpanses(result.data.expanses);
         } catch (err) {
             handleError(err);
         }
     }
+
+    const addExpanses = async (data) => {
+        try {
+            const url = `${APIUrl}/expanses`;
+            const headers = {
+                headers: {
+                    'Authorization': localStorage.getItem('token'),
+                    'Content-Type':'application/json'
+                },
+                method:'POST',
+                body:JSON.stringify(data)
+            }
+            const response = await fetch(url, headers); 
+            if (response.status === 403) {
+                navigate('/login')
+                return
+            }
+            const result = await response.json();
+            console.log(result);
+            setExpanses(result.data);
+        } catch (err) {
+            handleError(err);
+        }
+    }
+
+    const handleDelete = async (expanseId) => {
+        try {
+            const url = `${APIUrl}/expanses/${expanseId}`;
+            const headers = {
+                headers: {
+                    'Authorization': localStorage.getItem('token'),
+                    'Content-Type':'application/json'
+                },
+                method:'DELETE',
+            }
+            const response = await fetch(url, headers); 
+            if (response.status === 403) {
+                navigate('/login')
+                return
+            }
+            const result = await response.json();
+            console.log(result);
+            setExpanses(result.data.expanses);
+            handleSuccess(result.message)
+        } catch (err) {
+            handleError(err);
+        }
+    }
+    
     useEffect(() => {
-        fetchProducts()
+        fetchExpanses()
     }, [])
 
     return (
         <div>
-            <h1>Welcome {loggedInUser}</h1>
-            <button onClick={handleLogout}>Logout</button>
-            <div>
-                {
-                    products && products?.map((item, index) => (
-                        <ul key={index}>
-                            <span>{item.name} : {item.price}</span>
-                        </ul>
-                    ))
-                }
+            <div className='user-section'>
+                <h1>Welcome {loggedInUser}</h1>
+                <button onClick={handleLogout}>Logout</button>
             </div>
+            <ExpenseDetails expenseAmt={expenseAmt} incomeAmt={incomeAmt} />
+            <ExpenseTrackerForm addExpanses={addExpanses} />
+            <ExpansesTable expanses={expanses} handleDelete={handleDelete} />
             <ToastContainer />
         </div>
     )

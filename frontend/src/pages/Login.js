@@ -12,13 +12,18 @@ function Login() {
 
     const navigate = useNavigate();
 
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     console.log(name, value);
+    //     const copyLoginInfo = { ...loginInfo };
+    //     copyLoginInfo[name] = value;
+    //     setLoginInfo(copyLoginInfo);
+    // }
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        console.log(name, value);
-        const copyLoginInfo = { ...loginInfo };
-        copyLoginInfo[name] = value;
-        setLoginInfo(copyLoginInfo);
+        setLoginInfo({...loginInfo,[e.target.name]:e.target.value})
     }
+
+
 
     const handleLogin = async (e) => {
         e.preventDefault();

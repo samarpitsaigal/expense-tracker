@@ -33,15 +33,15 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await UserModel.findOne({ email });
-        const errorMsg = 'Auth failed email or password is wrong';
+        const errorMsg = 'Email is not found, Please try again';
         if (!user) {
-            return res.status(403)
+            return res.status(401)
                 .json({ message: errorMsg, success: false });
         }
         const isPassEqual = await bcrypt.compare(password, user.password);
         if (!isPassEqual) {
             return res.status(403)
-                .json({ message: errorMsg, success: false });
+                .json({ message: "password is wrong, please try again", success: false });
         }
         const jwtToken = jwt.sign(
             { email: user.email, _id: user._id },
