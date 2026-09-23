@@ -8,12 +8,25 @@ const formatDateTime = (date) => {
   return `${datePart}, ${timePart}`
 }
 
-const ExpansesTable = ({expanses, handleDelete}) => {
+const ExpansesTable = ({expanses, handleDelete, loading}) => {
   return (
     <div className='transactions'>
       <h2>Transactions</h2>
       {
-        expanses.length === 0 ? (
+        loading ? (
+          <div className='expense-list'>
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className='expense-item expense-skeleton'>
+                <div className='skeleton skeleton-delete'></div>
+                <div className='expense-info'>
+                  <div className='skeleton skeleton-line skeleton-line-lg'></div>
+                  <div className='skeleton skeleton-line'></div>
+                </div>
+                <div className='skeleton skeleton-line skeleton-amount'></div>
+              </div>
+            ))}
+          </div>
+        ) : expanses.length === 0 ? (
           <div className='transactions-empty'>No transactions yet. Add your first one!</div>
         ) : (
           <div className='expense-list'>

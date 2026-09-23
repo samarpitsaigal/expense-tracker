@@ -11,6 +11,7 @@ function Home() {
     const [expanses, setExpanses] = useState([])
     const [expenseAmt,setExpenseAmt] = useState(0)
     const [incomeAmt,setIncomeAmt] = useState(0)
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate();
     useEffect(() => {
         setLoggedInUser(localStorage.getItem('loggedInUser'))
@@ -38,6 +39,7 @@ function Home() {
     }
 
     const fetchExpanses = useCallback(async () => {
+        setLoading(true)
         try {
             const url = `${APIUrl}/expanses`;
             const headers = {
@@ -55,6 +57,8 @@ function Home() {
             setExpanses(result.data.expanses);
         } catch (err) {
             handleError(err);
+        } finally {
+            setLoading(false)
         }
     }, [navigate])
 
@@ -127,7 +131,7 @@ function Home() {
                     <ExpenseDetails expenseAmt={expenseAmt} incomeAmt={incomeAmt} />
                     <ExpenseTrackerForm addExpanses={addExpanses} />
                 </div>
-                <ExpansesTable expanses={expanses} handleDelete={handleDelete} />
+                <ExpansesTable expanses={expanses} handleDelete={handleDelete} loading={loading} />
             </div>
             <ToastContainer />
         </div>

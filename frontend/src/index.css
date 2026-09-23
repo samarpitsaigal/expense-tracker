@@ -390,6 +390,53 @@ button {
   transform: translateX(2px);
 }
 
+/* skeleton loading */
+.expense-skeleton {
+  pointer-events: none;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #eef0f6 25%, #e0e4ee 50%, #eef0f6 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: 6px;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-delete {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+.skeleton-line {
+  width: 120px;
+  height: 14px;
+  margin-bottom: 8px;
+}
+
+.skeleton-line-lg {
+  width: 180px;
+  height: 16px;
+  margin-bottom: 8px;
+}
+
+.skeleton-amount {
+  width: 60px;
+  height: 18px;
+  margin-bottom: 0;
+  margin-left: auto;
+}
+
 .delete-button {
   width: 30px;
   height: 30px;
